@@ -1,0 +1,46 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    function sameFamily(familyCode) {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.familyCode == familyCode;
+    }
+
+    match /users/{userId} {
+      allow create: if isOwner(userId);
+      allow read: if signedIn()
+        && sameFamily(resource.data.familyCode);
+      allow update: if isOwner(userId);
+      allow delete: if false;
+    }
+
+    match /families/{familyCode} {
+      allow create: if signedIn();
+      allow read: if sameFamily(familyCode);
+      allow update: if signedIn();
+      allow delete: if false;
+    }
+
+    match /places/{placeId} {
+      allow create: if signedIn()
+        && request.resource.data.userId == request.auth.uid;
+
+      allow read: if signedIn()
+        && sameFamily(resource.data.familyCode);
+
+      allow update, delete: if signedIn()
+        && resource.data.userId == request.auth.uid;
+    }
+  }
+}

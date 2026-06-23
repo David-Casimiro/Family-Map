@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Family Tracker</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIINfQbtrQMLB3nvhU1cixD9qYvUhB0WksA="
+    crossorigin=""
+  />
+</head>
+<body>
+  <div id="app">
+    <section id="authScreen" class="screen auth-screen">
+      <div class="auth-card">
+        <h1>Family Tracker</h1>
+        <p>Localização em tempo real para sua família, com consentimento de cada usuário.</p>
+
+        <div class="tabs">
+          <button id="loginTab" class="tab active">Entrar</button>
+          <button id="registerTab" class="tab">Cadastrar</button>
+        </div>
+
+        <form id="loginForm" class="form">
+          <label>E-mail</label>
+          <input id="loginEmail" type="email" required placeholder="seuemail@email.com" />
+
+          <label>Senha</label>
+          <input id="loginPassword" type="password" required placeholder="Sua senha" />
+
+          <button type="submit" class="primary">Entrar</button>
+        </form>
+
+        <form id="registerForm" class="form hidden">
+          <label>Nome</label>
+          <input id="registerName" type="text" required placeholder="Seu nome" />
+
+          <label>E-mail</label>
+          <input id="registerEmail" type="email" required placeholder="seuemail@email.com" />
+
+          <label>Senha</label>
+          <input id="registerPassword" type="password" required minlength="6" placeholder="Mínimo 6 caracteres" />
+
+          <label>Código da família</label>
+          <input id="registerFamilyCode" type="text" required placeholder="Ex: CASIMIRO2026" />
+
+          <button type="submit" class="primary">Criar conta</button>
+        </form>
+
+        <p id="authMessage" class="message"></p>
+      </div>
+    </section>
+
+    <section id="mainScreen" class="screen main-screen hidden">
+      <aside class="sidebar">
+        <div class="profile-box">
+          <img id="userPhoto" src="assets/default-avatar.svg" alt="Foto do usuário" />
+          <div>
+            <h2 id="userName">Usuário</h2>
+            <p id="userEmail"></p>
+            <small>Família: <span id="familyCodeLabel"></span></small>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button id="startSharingBtn" class="primary">Compartilhar localização</button>
+          <button id="stopSharingBtn" class="danger">Pausar compartilhamento</button>
+          <button id="centerMapBtn">Centralizar no meu local</button>
+        </div>
+
+        <div class="panel">
+          <h3>Meu perfil</h3>
+          <form id="profileForm" class="form compact">
+            <label>Nome</label>
+            <input id="profileName" type="text" />
+
+            <label>Foto de perfil</label>
+            <input id="profilePhoto" type="file" accept="image/*" />
+
+            <button type="submit">Salvar perfil</button>
+          </form>
+        </div>
+
+        <div class="panel">
+          <h3>Lugares frequentes</h3>
+          <form id="placeForm" class="form compact">
+            <input id="placeId" type="hidden" />
+
+            <label>Nome do lugar</label>
+            <input id="placeName" type="text" placeholder="Casa, trabalho, igreja..." required />
+
+            <label>Tipo</label>
+            <select id="placeType">
+              <option>Casa</option>
+              <option>Trabalho</option>
+              <option>Escola</option>
+              <option>Igreja</option>
+              <option>Outro</option>
+            </select>
+
+            <div class="grid-2">
+              <div>
+                <label>Latitude</label>
+                <input id="placeLat" type="number" step="any" required />
+              </div>
+              <div>
+                <label>Longitude</label>
+                <input id="placeLng" type="number" step="any" required />
+              </div>
+            </div>
+
+            <button type="button" id="useCurrentLocationBtn">Usar minha localização atual</button>
+            <button type="submit" class="primary">Salvar lugar</button>
+            <button type="button" id="clearPlaceFormBtn">Limpar</button>
+          </form>
+
+          <ul id="placesList" class="list"></ul>
+        </div>
+
+        <div class="panel">
+          <h3>Familiares online</h3>
+          <ul id="membersList" class="list"></ul>
+        </div>
+
+        <button id="logoutBtn" class="logout">Sair</button>
+      </aside>
+
+      <main class="map-area">
+        <div id="map"></div>
+        <div id="statusBar">
+          <span id="locationStatus">Localização pausada.</span>
+        </div>
+      </main>
+    </section>
+  </div>
+
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin="">
+  </script>
+
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
