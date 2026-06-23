@@ -84,7 +84,7 @@ let placeMarkers = {};
 let unsubscribeMembers = null;
 let unsubscribePlaces = null;
 
-const defaultAvatar = "assets/default-avatar.svg";
+const defaultAvatar = "./assets/default-avatar.svg";
 
 function showMessage(text) {
   authMessage.textContent = text || "";
