@@ -12,7 +12,6 @@
     measurementId: "G-WR1C10VQFB"
   };
 
-
    const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
 </script>
